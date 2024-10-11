@@ -1,0 +1,16 @@
+name: Alembic Rebase
+description: Maintain a linear history of Alembic migrations without having to manually resolve merge conflict.
+
+author: Chan Kang <chankang17@gmail.com>
+
+inputs:
+
+outputs:
+
+runs:
+  using: 'docker'
+  image: python:3.12-slim
+
+branding:
+  icon: 'git-commit'
+  color: orange
