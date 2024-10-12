@@ -4,8 +4,9 @@ description: Maintain a linear history of Alembic migrations without having to m
 author: Chan Kang <chankang17@gmail.com>
 
 inputs:
-
-outputs:
+  main-branch-name:
+    required: false
+    default: main
 
 runs:
   using: "composite"
