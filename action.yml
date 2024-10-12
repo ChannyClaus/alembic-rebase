@@ -11,8 +11,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "hello world"
+    - uses: astral-sh/setup-uv@v3
+    - id: head_on_main
+      run: |
+        git fetch origin ${{ inputs.main-branch-name }} &&
+        git checkout origin/${{ inputs.main-branch-name }} &&
+        (echo -n "revision=" && uv run python head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
+
+    - run: |
+        git checkout - &&
+        uv run python rebase.py --new-parent "${{ steps.head_on_main.outputs.revision }}"
+      shell: bash
+
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: rebasing the migration with the new parent revision "${{ steps.head_on_main.outputs.revision }}"
 
 branding:
   icon: 'git-commit'
