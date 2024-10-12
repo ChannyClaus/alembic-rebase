@@ -8,8 +8,9 @@ inputs:
 outputs:
 
 runs:
-  using: 'docker'
-  image: python:3.12-slim
+  using: "composite"
+  steps:
+    - run: echo "hello world"
 
 branding:
   icon: 'git-commit'
