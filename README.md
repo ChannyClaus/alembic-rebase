@@ -82,3 +82,7 @@ jobs:
           token: ${{ secrets.REPO_PAT }}
       - uses: ChannyClaus/alembic-rebase@v0.2
 ```
+
+# License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
