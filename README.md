@@ -23,6 +23,8 @@ This action automates this by:
 2. Figure out the revision being added in the feature branch by excluding the revision head from the main branch.
 3. Overwrite the parent of the new revision.
 
+Note that this action makes certain assumptions about the structure of Alembic revision files. It is unlikely that Alembic will change this (if ever), but making a note of that here regardless.
+
 # Usage
 ```
 name: CI
