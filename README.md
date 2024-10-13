@@ -25,6 +25,8 @@ This action automates this by:
 
 Note that this action makes certain assumptions about the structure of Alembic revision files. It is unlikely that Alembic will change this (if ever), but making a note of that here regardless.
 
+Lastly, feel free to file issues if you find bugs or have an idea to improve it.
+
 # Usage
 ```
 name: CI
