@@ -1,3 +1,6 @@
+import alembic_rebase
+
+
 def test_single_revision_on_head():
     pass
 
