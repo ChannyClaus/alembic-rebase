@@ -4,7 +4,7 @@ from alembic import command
 import argparse
 
 
-def main(alembic_cfg_path):
+def head_revision(alembic_cfg_path):
     alembic_cfg = Config(alembic_cfg_path)
 
     # alembic doesn't currently support returning a structured
@@ -22,10 +22,10 @@ def main(alembic_cfg_path):
 
     if len(head_revisions) != 1:
         raise Exception(
-            f"Found {len(head_revisions)} head revisions ({head_revisions}), expected 1"
+            f"Found {len(head_revisions)} head revisions {', '.join(head_revisions)}, expected 1"
         )
 
-    print(head_revisions[0])
+    return head_revisions[0]
 
 
 if __name__ == "__main__":
@@ -39,4 +39,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    main(args.alembic_cfg_path)
+    print(head_revision(args.alembic_cfg_path))
