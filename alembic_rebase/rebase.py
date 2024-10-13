@@ -28,9 +28,6 @@ def rebase(alembic_cfg_path, new_parent):
     # we parse the raw output here and parse it instead.
     stdout_buffer = io.StringIO()
     alembic_cfg.stdout = stdout_buffer
-    command.history(alembic_cfg)
-
-    stdout_buffer.seek(0)
     command.show(alembic_cfg, child)
     stdout_buffer.seek(0)
 
