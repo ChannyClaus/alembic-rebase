@@ -1,10 +1,11 @@
 import io
 from alembic.config import Config
 from alembic import command
+import argparse
 
 
-def main():
-    alembic_cfg = Config("alembic.ini")
+def main(alembic_cfg_path):
+    alembic_cfg = Config(alembic_cfg_path)
 
     # alembic doesn't currently support returning a structured
     # response from its API natively; we parse the raw output here and parse it instead.
@@ -28,4 +29,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Print the head revision of the current branch."
+    )
+    parser.add_argument(
+        "--alembic-cfg-path",
+        help="path to the alembic configuration file",
+        required=True,
+    )
+    args = parser.parse_args()
+
+    main(args.alembic_cfg_path)

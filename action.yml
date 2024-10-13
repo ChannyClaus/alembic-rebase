@@ -7,6 +7,9 @@ inputs:
   main-branch-name:
     required: false
     default: main
+  alembic-config-path:
+    required: false
+    default: alembic.ini
 
 runs:
   using: "composite"
