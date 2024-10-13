@@ -20,12 +20,12 @@ runs:
       run: |
         git fetch origin ${{ inputs.main-branch-name }} &&
         git checkout origin/${{ inputs.main-branch-name }} &&
-        (echo -n "revision=" && uv run python ${{ github.action_path }}/head_revision.py) >> $GITHUB_OUTPUT
+        (echo -n "revision=" && uv run python ${{ github.action_path }}/head_revision.py --alembic-cfg-path ${{ inputs.alembic-config-path }}) >> $GITHUB_OUTPUT
       shell: bash
 
     - run: |
         git checkout - &&
-        uv run python ${{ github.action_path }}/rebase.py --new-parent "${{ steps.head_on_main.outputs.revision }}"
+        uv run python ${{ github.action_path }}/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }} --alembic-cfg-path ${{ inputs.alembic-config-path }}
       shell: bash
 
     - uses: stefanzweifel/git-auto-commit-action@v5

@@ -4,8 +4,8 @@ from alembic.config import Config
 from alembic import command
 
 
-def main(new_parent):
-    alembic_cfg = Config("alembic.ini")
+def main(alembic_cfg_path, new_parent):
+    alembic_cfg = Config(alembic_cfg_path)
 
     # alembic doesn't support returning a structured
     # response from its API natively.
@@ -58,5 +58,10 @@ if __name__ == "__main__":
         help="the new parent revision for the revision added in the current branch.",
         required=True,
     )
+    parser.add_argument(
+        "--alembic-cfg-path",
+        help="path to the alembic configuration file",
+        required=True,
+    )
     args = parser.parse_args()
-    main(args.new_parent)
+    main(args.alembic_cfg_path, args.new_parent)
