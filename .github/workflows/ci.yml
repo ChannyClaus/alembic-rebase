@@ -6,5 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
-      - run: uv pip install pytest
-      - run: uv pytest tests
+      - run: uv run pytest tests

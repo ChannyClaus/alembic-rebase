@@ -1,0 +1,9 @@
+[project]
+name = "alembic-rebase"
+version = "0.1.0"
+description = "Maintain a linear history of Alembic migrations without having to manually resolve merge conflict."
+readme = "README.md"
+dependencies = [
+    "alembic>=1.13.3",
+    "pytest>=8.3.3",
+]
