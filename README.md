@@ -1,5 +1,27 @@
 # alembic-rebase
-Maintain a linear history of Alembic migrations without having to manually resolve merge conflict. 
+Maintain a linear history of Alembic migrations without having to manually resolve merge conflict.
+
+Organizations tend to maintain a completely linear history of database migrations for the sake of simplicity even when the tooling supports non-linear history. When they grow large enough, however, maintaining a linear history can be somewhat annoying and manual with the currently available tooling.
+
+Let's say we have two feature branches:
+```
+main branch: (revision None->a) -> (revision a->b) -> (revision b->c)
+feature branch 1: (revision c->d1)
+feature branch 2: (revision c->d2)
+```
+
+When the feature branch 1 merges, the above becomes:
+```
+main branch: (revision None->a) -> (revision a->b) -> (revision b->c) -> (revision c->d1)
+feature branch 2: (revision c->d2)
+```
+
+at which point the author of feature branch 2 would have to _manually_ edit their revision to be (d1 -> d2).
+
+This action automates this by:
+1. Ensure that there _exactly two_ revisions in `head` of the migration history.
+2. Figure out the revision being added in the feature branch by excluding the revision head from the main branch.
+3. Overwrite the parent of the new revision.
 
 # Usage
 ```
