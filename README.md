@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         # this token is used to create the rebasing commit.
-        # this is necessayr because the commits created by the defualt GitHub Action user
+        # this is necessary because the commits created by the defualt GitHub Action user
         # do _not_ trigger CI (see https://github.com/peter-evans/create-pull-request/issues/48).
         # make sure to include `repo` and `workflow` scopes.
         with:
