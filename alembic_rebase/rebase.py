@@ -1,10 +1,11 @@
 import argparse
 import io
+import re
 from alembic.config import Config
 from alembic import command
 
 
-def main(alembic_cfg_path, new_parent):
+def rebase(alembic_cfg_path, new_parent):
     alembic_cfg = Config(alembic_cfg_path)
 
     # alembic doesn't support returning a structured
@@ -12,25 +13,28 @@ def main(alembic_cfg_path, new_parent):
     # we parse the raw output here and parse it instead.
     stdout_buffer = io.StringIO()
     alembic_cfg.stdout = stdout_buffer
-    command.branches(alembic_cfg, "head")
+    command.history(alembic_cfg)
 
     stdout_buffer.seek(0)
     head_revisions = set(
         [
-            line.replace("             -> ", "")[:12]
+            re.search("-> .* \(head\)", line)
+            .group(0)
+            .replace("-> ", "")
+            .replace(" (head)", "")
             for line in stdout_buffer.read().split("\n")
-            if "(head)" in line
+            if "(head)" in line and re.search("-> .* \(head\)", line) is not None
         ]
     )
 
     if len(head_revisions) != 2:
         raise Exception(
-            f"Found {len(head_revisions)} head revisions ({head_revisions}), expected 2"
+            f"Found {len(head_revisions)} head revisions {', '.join(head_revisions)}, expected 2"
         )
 
     if new_parent not in head_revisions:
         raise Exception(
-            f"provided new parent revision {new_parent} not found in head revisions ({head_revisions})"
+            f"provided new parent revision {new_parent} not found in head revisions {', '.join(head_revisions)}"
         )
 
     child = (head_revisions - set([new_parent])).pop()
@@ -43,10 +47,11 @@ def main(alembic_cfg_path, new_parent):
     parent_to_replace = lines[1].replace("Parent: ", "")
     path = lines[2].replace("Path: ", "")
 
-    new_file_content = open(path).read().replace(parent_to_replace, new_parent)
-
-    with open(path, "w") as f:
-        f.write(new_file_content)
+    new_revision_file_content = open(path).read().replace(parent_to_replace, new_parent)
+    return {
+        "path": path,
+        "new_revision_file_content": new_revision_file_content,
+    }
 
 
 if __name__ == "__main__":
@@ -64,4 +69,6 @@ if __name__ == "__main__":
         required=True,
     )
     args = parser.parse_args()
-    main(args.alembic_cfg_path, args.new_parent)
+    result = rebase(args.alembic_cfg_path, args.new_parent)
+    with open(result["path"], "w") as f:
+        f.write(result["new_revision_file_content"])
