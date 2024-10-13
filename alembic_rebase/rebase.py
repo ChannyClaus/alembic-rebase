@@ -3,29 +3,14 @@ import io
 import re
 from alembic.config import Config
 from alembic import command
+from alembic.script import ScriptDirectory
 
 
 def rebase(alembic_cfg_path, new_parent):
     alembic_cfg = Config(alembic_cfg_path)
 
-    # alembic doesn't support returning a structured
-    # response from its API natively.
-    # we parse the raw output here and parse it instead.
-    stdout_buffer = io.StringIO()
-    alembic_cfg.stdout = stdout_buffer
-    command.history(alembic_cfg)
-
-    stdout_buffer.seek(0)
-    head_revisions = set(
-        [
-            re.search("-> .* \(head\)", line)
-            .group(0)
-            .replace("-> ", "")
-            .replace(" (head)", "")
-            for line in stdout_buffer.read().split("\n")
-            if "(head)" in line and re.search("-> .* \(head\)", line) is not None
-        ]
-    )
+    script = ScriptDirectory.from_config(alembic_cfg)
+    head_revisions = set(script.get_heads())
 
     if len(head_revisions) != 2:
         raise Exception(
@@ -38,6 +23,13 @@ def rebase(alembic_cfg_path, new_parent):
         )
 
     child = (head_revisions - set([new_parent])).pop()
+
+    # alembic doesn't support returning a structured
+    # response from its API natively.
+    # we parse the raw output here and parse it instead.
+    stdout_buffer = io.StringIO()
+    alembic_cfg.stdout = stdout_buffer
+    command.history(alembic_cfg)
 
     stdout_buffer.seek(0)
     command.show(alembic_cfg, child)
