@@ -64,7 +64,6 @@ jobs:
           # done via adding
           # config.set_main_option("sqlalchemy.url", os.environ["DB_URL"]) in env.py
           DB_URL: postgresql://postgres@localhost:5432/postgres
-        id: alembic_upgrade
 
   rebase:
     runs-on: ubuntu-latest
