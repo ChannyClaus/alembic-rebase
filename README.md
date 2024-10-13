@@ -58,5 +58,5 @@ jobs:
         # make sure to include `repo` and `workflow` scopes.
         with:
           token: ${{ secrets.REPO_PAT }}
-      - uses: ChannyClaus/alembic-rebase@main
+      - uses: ChannyClaus/alembic-rebase@v0.2
 ```
