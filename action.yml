@@ -13,22 +13,16 @@ runs:
   steps:
     - uses: astral-sh/setup-uv@v3
 
-    - name: Set GitHub Path
-      run: find "$GITHUB_ACTION_PATH"
-      shell: bash
-      env:
-        GITHUB_ACTION_PATH: ${{ github.action_path }}
-
     - id: head_on_main
       run: |
         git fetch origin ${{ inputs.main-branch-name }} &&
         git checkout origin/${{ inputs.main-branch-name }} &&
-        (echo -n "revision=" && uv run python head_revision.py) >> $GITHUB_OUTPUT
+        (echo -n "revision=" && uv run python ${{ github.action_path }}/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
 
     - run: |
         git checkout - &&
-        uv run python rebase.py --new-parent "${{ steps.head_on_main.outputs.revision }}"
+        uv run python ${{ github.action_path }}/rebase.py --new-parent "${{ steps.head_on_main.outputs.revision }}"
       shell: bash
 
     - uses: stefanzweifel/git-auto-commit-action@v5
