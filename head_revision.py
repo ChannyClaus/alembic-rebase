@@ -1,4 +1,3 @@
-import argparse
 import io
 from alembic.config import Config
 from alembic import command
@@ -7,9 +6,8 @@ from alembic import command
 def main():
     alembic_cfg = Config("alembic.ini")
 
-    # alembic doesn't support returning a structured
-    # response from its API natively.
-    # we parse the raw output here and parse it instead.
+    # alembic doesn't currently support returning a structured
+    # response from its API natively; we parse the raw output here and parse it instead.
     stdout_buffer = io.StringIO()
     alembic_cfg.stdout = stdout_buffer
     command.heads(alembic_cfg, "head")
