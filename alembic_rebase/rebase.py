@@ -53,6 +53,6 @@ if __name__ == "__main__":
         required=True,
     )
     args = parser.parse_args()
-    result = rebase(args.alembic_cfg_path, args.new_parent)
+    result = rebase(args.new_parent)
     with open(result["path"], "w") as f:
         f.write(result["new_revision_file_content"])

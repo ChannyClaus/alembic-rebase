@@ -21,5 +21,4 @@ if __name__ == "__main__":
         description="Print the head revision of the current branch."
     )
     args = parser.parse_args()
-
-    print(head_revision(args.alembic_cfg_path))
+    print(head_revision())
