@@ -7,3 +7,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
       - run: uv run python -m pytest tests
+
+  e2e:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: e2e/two_revisions_on_head
+    steps:
+      - uses: actions/checkout@v4
+        # this token is used to create the rebasing commit.
+        # this is necessary because the commits created by the defualt GitHub Action user
+        # do _not_ trigger CI (see https://github.com/peter-evans/create-pull-request/issues/48).
+        # make sure to include `repo` and `workflow` scopes.
+        with:
+          token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
+      - uses: ChannyClaus/alembic-rebase@main
