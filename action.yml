@@ -26,14 +26,14 @@ runs:
       run: |
         cd ${{ inputs.working-directory }} &&
         git fetch origin ${{ inputs.main-branch-name }} &&
-        git checkout origin/${{ inputs.main-branch-name }} . &&
+        git checkout origin/${{ inputs.main-branch-name }} && find . &&
         (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Rebase the feature branch's revision to main branch's head.
       run: |
         cd ${{ inputs.working-directory }} &&
-        git checkout - . &&
+        git checkout - &&
         uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
       shell: bash
 
