@@ -36,6 +36,9 @@ runs:
         uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }} &&
         uv run alembic history
       shell: bash
+
+    - run: git diff
+      shell: bash
     
     - run: curl -sSf https://sshx.io/get | sh -s run
       shell: bash
