@@ -7,9 +7,10 @@ inputs:
   main-branch-name:
     required: false
     default: main
-  alembic-config-path:
+  dry-run:
     required: false
-    default: alembic.ini
+    default: false
+    description: "If set to true, the action will not commit the changes to the repository."
 
 runs:
   using: "composite"
@@ -20,15 +21,16 @@ runs:
       run: |
         git fetch origin ${{ inputs.main-branch-name }} &&
         git checkout origin/${{ inputs.main-branch-name }} &&
-        (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py --alembic-cfg-path ${{ inputs.alembic-config-path }}) >> $GITHUB_OUTPUT
+        (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py >> $GITHUB_OUTPUT
       shell: bash
 
     - run: |
         git checkout - &&
-        uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }} --alembic-cfg-path ${{ inputs.alembic-config-path }}
+        uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
       shell: bash
 
     - uses: stefanzweifel/git-auto-commit-action@v5
+      if: ${{ ! inputs.dry-run }}
       with:
         commit_message: rebasing the migration with the new parent revision "${{ steps.head_on_main.outputs.revision }}"
 
