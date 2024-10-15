@@ -20,20 +20,18 @@ runs:
   using: "composite"
   steps:
     - uses: astral-sh/setup-uv@v3
-
+    - run: cd ${{ inputs.working-directory }}
     - id: head_on_main
       run: |
         git fetch origin ${{ inputs.main-branch-name }} &&
         git checkout origin/${{ inputs.main-branch-name }} &&
         (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
-      working-directory: ${{ inputs.working-directory }}
 
     - run: |
         git checkout - &&
         uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
       shell: bash
-      working-directory: ${{ inputs.working-directory }}
 
     - uses: stefanzweifel/git-auto-commit-action@v5
       if: ${{ ! inputs.dry-run }}
