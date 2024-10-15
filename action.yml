@@ -20,20 +20,17 @@ runs:
   using: "composite"
   steps:
     - uses: astral-sh/setup-uv@v3
-    - run: cd ${{ inputs.working-directory }}
-      shell: bash
-
-    - run: pwd && find .
-      shell: bash
 
     - id: head_on_main
       run: |
+        cd ${{ inputs.working-directory }} &&
         git fetch origin ${{ inputs.main-branch-name }} &&
         git checkout origin/${{ inputs.main-branch-name }} &&
         (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
 
     - run: |
+        cd ${{ inputs.working-directory }} &&
         git checkout - &&
         uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
       shell: bash
