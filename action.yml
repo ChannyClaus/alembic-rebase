@@ -13,7 +13,7 @@ inputs:
     description: "If set to true, the action will not commit the changes to the repository."
   working-directory:
     required: false
-    default: .
+    default: ./
 
 
 runs:
