@@ -38,7 +38,8 @@ runs:
       run: |
         cd ${{ inputs.working-directory }} &&
         git checkout - &&
-        uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
+        uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }} &&
+        uv run alembic history
       shell: bash
 
     - uses: stefanzweifel/git-auto-commit-action@v5
