@@ -22,6 +22,10 @@ runs:
     - uses: astral-sh/setup-uv@v3
     - run: cd ${{ inputs.working-directory }}
       shell: bash
+
+    - run: pwd
+      shell: bash
+
     - id: head_on_main
       run: |
         git fetch origin ${{ inputs.main-branch-name }} &&
