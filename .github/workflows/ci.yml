@@ -10,9 +10,6 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: e2e/two_revisions_on_head
     steps:
       - uses: actions/checkout@v4
         # this token is used to create the rebasing commit.
@@ -24,3 +21,4 @@ jobs:
       - uses: ChannyClaus/alembic-rebase@main
         with:
           dry-run: true
+          working-directory: e2e/two_revisions_on_head

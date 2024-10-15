@@ -11,6 +11,10 @@ inputs:
     required: false
     default: false
     description: "If set to true, the action will not commit the changes to the repository."
+  working-directory:
+    required: false
+    default: .
+
 
 runs:
   using: "composite"
@@ -23,16 +27,19 @@ runs:
         git checkout origin/${{ inputs.main-branch-name }} &&
         (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
 
     - run: |
         git checkout - &&
         uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
 
     - uses: stefanzweifel/git-auto-commit-action@v5
       if: ${{ ! inputs.dry-run }}
       with:
         commit_message: rebasing the migration with the new parent revision "${{ steps.head_on_main.outputs.revision }}"
+      working-directory: ${{ inputs.working-directory }}
 
 branding:
   icon: 'git-commit'
