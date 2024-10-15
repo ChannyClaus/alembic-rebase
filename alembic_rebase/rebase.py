@@ -23,6 +23,7 @@ def rebase(new_parent):
         )
 
     child = (head_revisions - set([new_parent])).pop()
+    print(f"new head revision {child} to point to the new parent revision {new_parent}")
 
     # alembic doesn't support returning a structured
     # response from its API natively.
