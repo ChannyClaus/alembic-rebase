@@ -18,6 +18,7 @@ jobs:
         # make sure to include `repo` and `workflow` scopes.
         with:
           token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
+      - run: uv run alembic revision --head 1673531f822c --rev-id duplicate --splice
       - uses: ChannyClaus/alembic-rebase@main
         with:
           dry-run: true
