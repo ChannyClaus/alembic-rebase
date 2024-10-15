@@ -37,6 +37,8 @@ def rebase(new_parent):
     parent_to_replace = lines[1].replace("Parent: ", "")
     path = lines[2].replace("Path: ", "")
 
+    print(f"replacing {parent_to_replace} with {new_parent} in {path}")
+
     new_revision_file_content = open(path).read().replace(parent_to_replace, new_parent)
     return {
         "path": path,
