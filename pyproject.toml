@@ -5,5 +5,4 @@ description = "Maintain a linear history of Alembic migrations without having to
 readme = "README.md"
 dependencies = [
     "alembic>=1.13.3",
-    "pytest>=8.3.3",
 ]
