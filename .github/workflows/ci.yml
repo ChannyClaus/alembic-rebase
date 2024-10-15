@@ -22,3 +22,5 @@ jobs:
         with:
           token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
       - uses: ChannyClaus/alembic-rebase@main
+        with:
+          dry-run: true
