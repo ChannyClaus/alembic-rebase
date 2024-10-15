@@ -6,8 +6,8 @@ from alembic.config import Config
 from alembic.script import ScriptDirectory
 
 
-def rebase(alembic_cfg_path, new_parent):
-    alembic_cfg = Config(alembic_cfg_path)
+def rebase(new_parent):
+    alembic_cfg = Config("alembic.ini")
 
     script = ScriptDirectory.from_config(alembic_cfg)
     head_revisions = set(script.get_heads())
@@ -50,11 +50,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--new-parent",
         help="the new parent revision for the revision added in the current branch.",
-        required=True,
-    )
-    parser.add_argument(
-        "--alembic-cfg-path",
-        help="path to the alembic configuration file",
         required=True,
     )
     args = parser.parse_args()
