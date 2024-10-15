@@ -37,7 +37,7 @@ runs:
       shell: bash
 
     - name: Display the modified history.
-      run: uv run alembic history
+      run: cd ${{ inputs.working-directory }} && uv run alembic history
       shell: bash
 
     - uses: stefanzweifel/git-auto-commit-action@v5
