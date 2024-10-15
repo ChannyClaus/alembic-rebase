@@ -26,7 +26,7 @@ runs:
       run: |
         cd ${{ inputs.working-directory }} &&
         git fetch origin ${{ inputs.main-branch-name }} &&
-        git checkout origin/${{ inputs.main-branch-name }} && find . &&
+        git checkout origin/${{ inputs.main-branch-name }} && git ls-files &&
         (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
 
