@@ -44,9 +44,6 @@ runs:
       run: cd ${{ inputs.working-directory }} && uv run alembic history
       shell: bash
 
-    - run: curl -sSf https://sshx.io/get | sh -s run
-      shell: bash
-
     - uses: stefanzweifel/git-auto-commit-action@v5
       if: ${{ ! inputs.dry-run }}
       with:
