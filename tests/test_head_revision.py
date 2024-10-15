@@ -1,4 +1,5 @@
 import pytest
+
 from alembic_rebase.head_revision import head_revision
 
 

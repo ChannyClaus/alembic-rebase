@@ -1,4 +1,5 @@
 import pytest
+
 from alembic_rebase.rebase import rebase
 
 
