@@ -20,7 +20,7 @@ jobs:
           token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
       - uses: astral-sh/setup-uv@v3
       - run: cd e2e/two_revisions_on_head && uv run alembic revision --head 1673531f822c --rev-id duplicate --splice
-      - uses: ChannyClaus/alembic-rebase@main
+      - uses: ChannyClaus/alembic-rebase@test-e2e
         with:
           dry-run: true
           working-directory: e2e/two_revisions_on_head
