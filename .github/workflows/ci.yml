@@ -21,4 +21,5 @@ jobs:
         # make sure to include `repo` and `workflow` scopes.
         with:
           token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
+      - run: rm -r migrations
       - uses: ChannyClaus/alembic-rebase@main
