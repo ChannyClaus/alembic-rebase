@@ -10,6 +10,19 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         # this token is used to create the rebasing commit.
@@ -31,3 +44,4 @@ jobs:
         with:
           dry-run: true
           working-directory: e2e/two_revisions_on_head
+      - run: uv run alembic upgrade head
