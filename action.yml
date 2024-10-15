@@ -21,7 +21,7 @@ runs:
       run: |
         git fetch origin ${{ inputs.main-branch-name }} &&
         git checkout origin/${{ inputs.main-branch-name }} &&
-        (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py >> $GITHUB_OUTPUT
+        (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
 
     - run: |
