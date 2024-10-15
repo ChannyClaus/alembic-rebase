@@ -23,7 +23,7 @@ runs:
     - run: cd ${{ inputs.working-directory }}
       shell: bash
 
-    - run: pwd
+    - run: pwd && find .
       shell: bash
 
     - id: head_on_main
