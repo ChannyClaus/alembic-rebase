@@ -20,21 +20,20 @@ runs:
   using: "composite"
   steps:
     - uses: astral-sh/setup-uv@v3
-    # - run: curl -sSf https://sshx.io/get | sh -s run
-    #   shell: bash
+
     - name: Get the head revision of main branch
       id: head_on_main
       run: |
         cd ${{ inputs.working-directory }} &&
         git fetch origin ${{ inputs.main-branch-name }} &&
-        git reset --hard origin/${{ inputs.main-branch-name }} && git ls-files &&
+        git checkout origin/${{ inputs.main-branch-name }} &&
         (echo -n "revision=" && uv run python ${{ github.action_path }}/alembic_rebase/head_revision.py) >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Rebase the feature branch's revision to main branch's head.
       run: |
         cd ${{ inputs.working-directory }} &&
-        git checkout - . &&
+        git checkout - &&
         uv run python ${{ github.action_path }}/alembic_rebase/rebase.py --new-parent ${{ steps.head_on_main.outputs.revision }}
       shell: bash
 
