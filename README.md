@@ -31,11 +31,7 @@ Lastly, feel free to file issues if you find bugs or have an idea to improve it.
 ```
 name: CI
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+on: push
 
 jobs:
   # run all Alembic migrations available in the current repository.
