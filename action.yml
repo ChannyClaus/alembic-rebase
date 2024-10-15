@@ -39,7 +39,6 @@ runs:
       if: ${{ ! inputs.dry-run }}
       with:
         commit_message: rebasing the migration with the new parent revision "${{ steps.head_on_main.outputs.revision }}"
-      working-directory: ${{ inputs.working-directory }}
 
 branding:
   icon: 'git-commit'
