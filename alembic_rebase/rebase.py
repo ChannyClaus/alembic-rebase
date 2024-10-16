@@ -23,6 +23,7 @@ def rebase(new_parent):
         )
 
     child = (head_revisions - set([new_parent])).pop()
+    print(f"new head revision {child} to point to the new parent revision {new_parent}")
 
     # alembic doesn't support returning a structured
     # response from its API natively.
@@ -35,6 +36,8 @@ def rebase(new_parent):
     lines = [line for line in stdout_buffer.read().split("\n")]
     parent_to_replace = lines[1].replace("Parent: ", "")
     path = lines[2].replace("Path: ", "")
+
+    print(f"replacing {parent_to_replace} with {new_parent} in {path}")
 
     new_revision_file_content = open(path).read().replace(parent_to_replace, new_parent)
     return {

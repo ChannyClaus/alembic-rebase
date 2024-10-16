@@ -15,6 +15,19 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         # this token is used to create the rebasing commit.
@@ -24,8 +37,20 @@ jobs:
         with:
           token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
       - uses: astral-sh/setup-uv@v3
-      - run: cd e2e/two_revisions_on_head && uv run alembic revision --head 1673531f822c --rev-id duplicate --splice
-      - uses: ChannyClaus/alembic-rebase@main
+      - run: |
+          cd e2e/two_revisions_on_head &&
+          uv run alembic revision --head 1673531f822c --rev-id 1673531f822d --splice &&
+          git add * &&
+          git config --global user.email "alembic-rebase@github-actions[bot]" &&
+          git config --global user.name "alembic-rebase[bot]" &&
+          git commit -m "duplicate revision"
+
+      - uses: ChannyClaus/alembic-rebase@test-e2e
         with:
           dry-run: true
           working-directory: e2e/two_revisions_on_head
+
+      # this seems to be necessary for `alembic` to pick up on the edit.
+      # TODO: find out exactly why, and remove if unnecessary.
+      - run: touch e2e/two_revisions_on_head/migrations/versions/1673531f822d_.py
+      - run: cd e2e/two_revisions_on_head && uv run alembic upgrade head
