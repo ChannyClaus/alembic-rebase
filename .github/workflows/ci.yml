@@ -55,5 +55,5 @@ jobs:
 
       # this seems to be necessary for `alembic` to pick up on the edit.
       # TODO: find out exactly why, and remove if unnecessary.
-      - run: touch migrations/versions/1673531f822d_.py
+      - run: touch e2e/two_revisions_on_head/migrations/versions/1673531f822d_.py
       - run: cd e2e/two_revisions_on_head && uv run alembic upgrade head
