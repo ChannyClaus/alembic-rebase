@@ -37,9 +37,12 @@ jobs:
         with:
           token: ${{ secrets.ALEMBIC_REBASE_TOKEN }}
       - uses: astral-sh/setup-uv@v3
+      # `touch` seems necessary for `alembic` to pick up that new migration.
+      # TODO: figure out why it is, remove if possible.
       - run: |
           cd e2e/two_revisions_on_head &&
           uv run alembic revision --head 1673531f822c --rev-id 1673531f822d --splice &&
+          touch migrations/versions/1673531f822d_.py
           git add * &&
           git config --global user.email "alembic-rebase@github-actions[bot]" &&
           git config --global user.name "alembic-rebase[bot]" &&
