@@ -55,11 +55,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
+      # Be sure to set `sqlalchemy.url` to `postgresql://postgres@localhost:5432/postgres`.
       - run: uv run alembic upgrade head
-        env:
-          # done via adding
-          # config.set_main_option("sqlalchemy.url", os.environ["DB_URL"]) in env.py
-          DB_URL: postgresql://postgres@localhost:5432/postgres
 
   rebase:
     runs-on: ubuntu-latest
